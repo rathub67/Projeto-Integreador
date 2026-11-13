@@ -1,0 +1,29 @@
+{
+  "name": "rmvm-backend",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "db:check": "node scripts/ensure-db.js",
+    "prisma:generate": "node node_modules/prisma/build/index.js generate",
+    "prisma:migrate": "node node_modules/prisma/build/index.js db push",
+    "prisma:deploy": "node node_modules/prisma/build/index.js db push",
+    "prisma:studio": "node node_modules/prisma/build/index.js studio"
+  },
+  "dependencies": {
+    "@libsql/client": "^0.18.0",
+    "@prisma/adapter-libsql": "^7.10.0",
+    "@prisma/client": "^7.10.0",
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.9",
+    "express": "^5.3.0",
+    "jsonwebtoken": "^9.0.3",
+    "morgan": "^1.12.1"
+  },
+  "devDependencies": {
+    "prisma": "^7.10.0"
+  }
+}

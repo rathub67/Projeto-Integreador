@@ -1,0 +1,59 @@
+RMVM 7 - LEIA-ME
+================
+
+Esta e a versao SEM executavel.
+Nao existe nenhum .exe de arranque nesta pasta.
+
+As dependencias do projeto (node_modules) ja vao incluidas.
+Nao e preciso correr "npm install" para abrir o site.
+
+A base de dados tambem ja vai incluida (SQLite). Nao precisa de
+instalar MariaDB nem MySQL. Os dados ficam em dados\rmvm.db.
+
+Para funcionar, este computador precisa apenas de ter:
+
+   1. Node.js 20 ou mais recente
+
+Se ainda nao tem o Node.js, siga o ficheiro:
+
+   INSTALAR.txt
+
+Se ja tem o Node.js, abra a pasta do site, abra o cmd nessa pasta
+e escreva:
+
+   npm run dev
+
+Se estiver no PowerShell e o comando for bloqueado:
+
+   npm.cmd run dev
+
+Tambem pode usar sempre:
+
+   node scripts\dev.js
+
+O navegador abre sozinho em http://localhost:5173
+
+
+ENTRAR
+------
+   Administrador:  admin@rmvm.com
+   Senha:          admin123
+
+
+PARA TERMINAR
+-------------
+   Feche a janela preta ou carregue em Ctrl + C.
+
+
+RESUMO DOS FICHEIROS
+--------------------
+   INSTALAR.txt   instrucoes completas, passo a passo
+   README.md      informacao tecnica do projeto
+   backend\       servidor/API (com node_modules incluido)
+   frontend\      site (com node_modules e versao compilada)
+   scripts\       comandos de arranque e preparacao
+   dados\         base de dados SQLite (criada no primeiro arranque)
+
+Nota: as pastas node_modules contem bibliotecas de terceiros.
+Algumas dessas bibliotecas trazem ficheiros binarios proprios,
+mas nao existe qualquer launcher ou executavel de arranque do site.

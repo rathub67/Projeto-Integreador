@@ -1,0 +1,25 @@
+{
+  "name": "rmvm-7",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "postinstall": "npm --prefix frontend install && npm --prefix backend install",
+    "setup": "node scripts/setup.js",
+    "dev": "node scripts/dev.js",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "dev:backend": "npm --prefix backend run dev",
+    "prebuild": "npm --prefix frontend run lint",
+    "build": "npm --prefix frontend run build",
+    "lint": "npm --prefix frontend run lint",
+    "start": "node backend/scripts/start-prod.js",
+    "db:check": "npm --prefix backend run db:check",
+    "db:generate": "npm --prefix backend run prisma:generate",
+    "db:migrate": "npm --prefix backend run prisma:migrate",
+    "db:deploy": "npm --prefix backend run prisma:deploy",
+    "db:studio": "npm --prefix backend run prisma:studio"
+  }
+}

@@ -1,0 +1,100 @@
+RMVM 7 - INSTALAR E ABRIR O SITE
+================================
+
+Esta versao NAO traz o Node.js dentro da pasta.
+E preciso instalar o Node.js uma unica vez neste computador.
+
+A base de dados ja vai incluida (SQLite). Nao e preciso instalar
+MariaDB, MySQL nem qualquer outro programa de base de dados.
+
+As dependencias do projeto (node_modules) JA VAO INCLUIDAS na pasta.
+Por isso, depois de instalar o Node.js, o site abre diretamente.
+Nao e preciso internet para abrir o site.
+
+
+PASSO 1 - INSTALAR O NODE.JS
+----------------------------
+1. Abra o navegador em:  https://nodejs.org
+2. Descarregue a versao "LTS" (Node.js 20 ou mais recente).
+3. Execute o instalador e clique sempre em "Next" / "Install".
+4. No fim, clique em "Finish".
+
+Para confirmar, abra o "Prompt de Comando" (cmd) e escreva:
+
+   node -v
+
+Deve aparecer algo como: v22.x.x
+
+
+PASSO 2 - GUARDAR A PASTA DO SITE
+---------------------------------
+1. Extraia a pasta "rmvm 7 - sem executaveis" para o Ambiente de
+   Trabalho ou para Documentos.
+2. Nao e preciso instalar mais nada dentro da pasta.
+
+
+PASSO 3 - ABRIR O SITE
+----------------------
+1. Abra a pasta do site no Explorador de Ficheiros.
+2. Clique na barra de endereco no topo, escreva  cmd  e Enter.
+3. Na janela preta que abrir, escreva:
+
+   npm run dev
+
+Tambem pode usar:
+
+   node scripts\dev.js
+
+- A janela mostra o endereco do site e abre o navegador sozinho.
+- Se nao abrir, escreva no navegador:  http://localhost:5173
+- Pode demorar alguns segundos na primeira vez.
+
+Se estiver a usar o PowerShell e o comando "npm run dev" for
+bloqueado, escreva antes:
+
+   npm.cmd run dev
+
+
+ONDE FICAM OS DADOS
+-------------------
+Os dados ficam guardados nesta pasta:
+
+   dados\rmvm.db
+
+- Para fazer uma copia de seguranca, copie a pasta "dados".
+- Para comecar de novo (apagar tudo), feche o site e apague a pasta
+  "dados". Ela volta a ser criada no proximo arranque.
+- Nunca precisa de instalar uma base de dados separada.
+
+
+ENTRAR NO SISTEMA
+-----------------
+   Administrador:  admin@rmvm.com
+   Senha:          admin123
+
+Pode alterar a senha em "Minha conta" depois de entrar.
+
+
+PARA TERMINAR
+-------------
+- Feche a janela preta, ou
+- Carregue em Ctrl + C na janela preta e confirme.
+
+
+PROBLEMAS FREQUENTES
+--------------------
+- "node nao e reconhecido":
+  o Node.js nao ficou instalado ou a janela e antiga.
+  Feche o cmd, abra outro e tente outra vez. Se continuar, reinstale
+  o Node.js e reinicie o computador.
+
+- "npm run dev" bloqueado no PowerShell:
+  use "npm.cmd run dev" ou "node scripts\dev.js".
+
+- Porta ocupada:
+  o proprio programa escolhe outra porta e mostra o novo endereco.
+
+- Se apagar a pasta node_modules por engano, abra o cmd na pasta e
+  execute (precisa de internet):
+
+     npm.cmd install
