@@ -1,13 +1,19 @@
+import 'dotenv/config';
 import { PrismaClient, Prisma } from '../generated/prisma/client.js';
-import { PrismaLibSql } from '@prisma/adapter-libsql';
+import { PrismaMariaDb } from '@prisma/adapter-mariadb';
 
 import createError from '../utils/createError.js';
-import { resolveDbConfig, ensureDbDir } from './dbConfig.js';
 
-const db = resolveDbConfig();
-ensureDbDir(db);
+const dbUrl = new URL(process.env.DATABASE_URL);
 
-const adapter = new PrismaLibSql({ url: db.url });
+const adapter = new PrismaMariaDb({
+    host: dbUrl.hostname,
+    port: Number(dbUrl.port) || 3306,
+    user: decodeURIComponent(dbUrl.username),
+    password: decodeURIComponent(dbUrl.password),
+    database: dbUrl.pathname.slice(1),
+    connectionLimit: 5,
+});
 
 const prisma = new PrismaClient({ adapter });
 

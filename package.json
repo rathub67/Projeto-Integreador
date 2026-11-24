@@ -21,5 +21,9 @@
     "db:migrate": "npm --prefix backend run prisma:migrate",
     "db:deploy": "npm --prefix backend run prisma:deploy",
     "db:studio": "npm --prefix backend run prisma:studio"
+  },
+  "dependencies": {
+    "@prisma/client": "^7.10.1",
+    "prisma": "^8.0.0-rc.35"
   }
 }

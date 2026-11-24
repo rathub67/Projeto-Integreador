@@ -2,7 +2,6 @@ import 'dotenv/config';
 
 import app from './app.js';
 import { prisma } from './lib/prisma.js';
-import { resolveDbConfig } from './lib/dbConfig.js';
 import { criarAdmin } from './lib/seed.js';
 
 const PORT = Number(process.env.PORT || 3001);
@@ -14,11 +13,11 @@ async function start() {
     }
 
     const criado = await criarAdmin();
-    const db = resolveDbConfig();
+    const dbUrl = new URL(process.env.DATABASE_URL);
 
     app.listen(PORT, HOST, () => {
         console.log(`\n  RMVM API rodando em http://localhost:${PORT}`);
-        console.log(`  Banco de dados: SQLite (${db.file})`);
+        console.log(`  Banco de dados: MySQL (${dbUrl.hostname}:${dbUrl.port || 3306}/${dbUrl.pathname.slice(1)})`);
         if (criado) console.log("  Administrador criado neste arranque.");
     });
 }
