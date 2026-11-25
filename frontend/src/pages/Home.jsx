@@ -77,7 +77,29 @@ const violencias = [
 ];
 
 const seta =
-  "flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-full border border-[#d9a63e] bg-white text-[#360e53] transition hover:border-[#FF7043] hover:bg-[#FF7043] hover:text-white disabled:cursor-not-allowed disabled:opacity-40";
+  "flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-full border border-[#d9a63e] bg-white text-[#360e53] transition hover:border-[#FF7043] hover:bg-[#FF7043] hover:text-white disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#360e53]";
+
+/* Animações da home. Ficam desligadas para quem usa "reduzir movimento". */
+const estilos = `
+@keyframes rm-subir {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes rm-pulso {
+  0%   { box-shadow: 0 0 0 0 rgba(255, 20, 20, 0.55); }
+  70%  { box-shadow: 0 0 0 16px rgba(255, 20, 20, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 20, 20, 0); }
+}
+@keyframes rm-abrir {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .rm-subir { animation: rm-subir 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .rm-pulso { animation: rm-pulso 2.4s ease-out infinite; }
+  .rm-abrir { animation: rm-abrir 0.3s ease-out both; }
+}
+`;
 
 function Titulo({ children, escuro = false }) {
   return (
@@ -88,7 +110,7 @@ function Titulo({ children, escuro = false }) {
         }`}
       />
       <h2
-        className={`text-2xl font-bold leading-tight ${
+        className={`text-2xl font-bold leading-tight sm:text-3xl ${
           escuro ? "text-white" : "text-[#FF7043]"
         }`}
       >
@@ -100,19 +122,128 @@ function Titulo({ children, escuro = false }) {
 
 function Hero() {
   return (
-    <div className="relative flex h-[559px] items-end overflow-hidden bg-[#ffefa7]">
+    <div className="relative flex min-h-[559px] items-end overflow-hidden bg-[#ffefa7]">
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: `url(${hero})` }}
         aria-hidden="true"
       />
+      {/* Degradê só na base, para o texto ler bem sem esconder a imagem */}
+      <div
+        className="absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-t from-[#360E53]/85 via-[#360E53]/40 to-transparent"
+        aria-hidden="true"
+      />
 
-      <NavLink
-        className="relative z-[1] m-20 inline-block max-h-[10%] rounded-[5rem] bg-[#FF1414] px-[2em] py-[1em] text-base font-semibold text-white no-underline hover:bg-[#B40909] max-[500px]:m-8"
-        to="/denunciar"
-      >
-        Denuncie
-      </NavLink>
+      <div className="rm-subir relative z-[1] w-full px-8 pb-10 sm:px-20 sm:pb-14">
+        <p className="mb-4 max-w-xl text-lg font-semibold leading-7 text-white sm:text-xl">
+          Você não está sozinha. Entenda seus direitos e peça orientação
+          jurídica com sigilo.
+        </p>
+
+        <div className="flex flex-wrap items-center gap-3">
+          <NavLink
+            className="rm-pulso inline-block rounded-[5rem] bg-[#FF1414] px-[2em] py-[1em] text-base font-semibold text-white no-underline transition hover:-translate-y-0.5 hover:bg-[#B40909] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            to="/denunciar"
+          >
+            Denuncie
+          </NavLink>
+
+          <a
+            href="tel:180"
+            className="inline-block rounded-[5rem] border border-white/70 bg-white/10 px-[1.6em] py-[0.9em] text-base font-semibold text-white no-underline backdrop-blur-sm transition hover:bg-white hover:text-[#360E53] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+          >
+            Ligue 180
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function FaixaEmergencia() {
+  return (
+    <div className="bg-[#360E53] px-6 py-3 text-center text-sm text-white md:px-10">
+      Em risco agora? Ligue{" "}
+      <a href="tel:190" className="font-bold text-[#FFAB0B] hover:underline">
+        190
+      </a>{" "}
+      (Polícia Militar) ou{" "}
+      <a href="tel:180" className="font-bold text-[#FFAB0B] hover:underline">
+        180
+      </a>{" "}
+      (Central de Atendimento à Mulher).
+    </div>
+  );
+}
+
+function TiposDeViolencia() {
+  const [aberto, setAberto] = useState(null);
+  const atual = violencias.find((v) => v.titulo === aberto);
+
+  function alternar(titulo) {
+    setAberto((prev) => (prev === titulo ? null : titulo));
+  }
+
+  return (
+    <div>
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
+        {violencias.map((item) => {
+          const ativo = item.titulo === aberto;
+
+          return (
+            <button
+              key={item.titulo}
+              type="button"
+              onClick={() => alternar(item.titulo)}
+              aria-expanded={ativo}
+              aria-controls="descricao-violencia"
+              className={`flex min-h-[56px] cursor-pointer items-center justify-center rounded-xl px-2 py-2 text-center text-sm font-semibold leading-5 transition duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#360e53] ${
+                ativo
+                  ? "-translate-y-0.5 bg-[#360E53] text-white shadow-lg"
+                  : "bg-[#FFAB0B] text-white hover:-translate-y-0.5 hover:bg-[#F59E0B] hover:shadow-md"
+              }`}
+            >
+              {item.titulo}
+            </button>
+          );
+        })}
+      </div>
+
+      <div id="descricao-violencia" aria-live="polite">
+        {atual ? (
+          <div
+            key={atual.titulo}
+            className="rm-abrir mt-5 rounded-xl border-l-4 border-[#FF7043] bg-white p-5 shadow-lg"
+          >
+            <div className="flex items-start justify-between gap-3">
+              <h3 className="text-lg font-bold text-[#360E53]">
+                {atual.titulo}
+              </h3>
+              <button
+                type="button"
+                onClick={() => setAberto(null)}
+                aria-label="Fechar descrição"
+                className="cursor-pointer rounded-full px-2 text-xl leading-none text-[#6f5a7c] hover:text-[#FF7043] focus-visible:outline-2 focus-visible:outline-[#360e53]"
+              >
+                ×
+              </button>
+            </div>
+            <p className="mt-2 max-w-3xl text-base leading-7 text-gray-700">
+              {atual.descricao}
+            </p>
+            <NavLink
+              to="/denunciar"
+              className="mt-4 inline-block text-sm font-semibold text-[#8048A9] hover:underline"
+            >
+              Passei por isso. Quero orientação
+            </NavLink>
+          </div>
+        ) : (
+          <p className="mt-4 text-sm text-[#6f5a7c]">
+            Toque em um tipo para ler o que ele significa.
+          </p>
+        )}
+      </div>
     </div>
   );
 }
@@ -170,7 +301,16 @@ function Noticias() {
   }
 
   if (loading) {
-    return <p className="text-base text-[#6f5a7c]">Carregando notícias...</p>;
+    return (
+      <div className="flex gap-4" aria-label="Carregando notícias">
+        {[0, 1, 2].map((i) => (
+          <div
+            key={i}
+            className="h-36 flex-1 animate-pulse rounded-xl bg-[#FFAB0B]/40"
+          />
+        ))}
+      </div>
+    );
   }
 
   if (error) {
@@ -208,12 +348,12 @@ function Noticias() {
             href={item.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex min-h-[9rem] shrink-0 basis-[88%] snap-start flex-col gap-2 rounded-xl bg-[#FFAB0B] p-4 text-white no-underline shadow-sm transition-colors hover:bg-[#F59E0B] sm:basis-[calc((100%-1rem)/2)] md:basis-[calc((100%-2rem)/3)] lg:basis-[calc((100%-3rem)/4)] xl:basis-[calc((100%-4rem)/5)]"
+            className="group flex min-h-[9rem] shrink-0 basis-[88%] snap-start flex-col gap-2 rounded-xl bg-[#FFAB0B] p-4 text-white no-underline shadow-sm transition duration-200 hover:-translate-y-1 hover:bg-[#F59E0B] hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#360e53] sm:basis-[calc((100%-1rem)/2)] md:basis-[calc((100%-2rem)/3)] lg:basis-[calc((100%-3rem)/4)] xl:basis-[calc((100%-4rem)/5)]"
           >
             <h3 className="m-0 break-words text-base font-bold leading-6 text-white">
               {item.title}
             </h3>
-            <span className="mt-auto text-sm font-semibold text-white/90 transition-colors group-hover:text-white">
+            <span className="mt-auto text-sm font-semibold text-white/90 transition group-hover:translate-x-1 group-hover:text-white">
               Ler notícia ↗
             </span>
           </a>
@@ -267,8 +407,11 @@ function Noticias() {
 export default function Home() {
   return (
     <div className="h-auto bg-[#F4E7F6]">
+      <style>{estilos}</style>
+
       <section>
         <Hero />
+        <FaixaEmergencia />
       </section>
 
       <section
@@ -296,9 +439,10 @@ export default function Home() {
         </div>
 
         <img
-          className="mx-auto w-full max-w-md rounded-xl"
+          className="mx-auto w-full max-w-md rounded-xl shadow-xl transition duration-500 hover:scale-[1.02]"
           src={escritorio}
           alt="Escritório da RMVM Advogados"
+          loading="lazy"
         />
       </section>
 
@@ -308,18 +452,16 @@ export default function Home() {
       >
         <Titulo escuro>Áreas de Atuação</Titulo>
 
-        <div className="grid gap-x-8 gap-y-2 md:grid-cols-2">
-          <ul className="list-disc space-y-2 pl-5 text-base leading-7">
-            {areas.slice(0, 7).map((area) => (
-              <li key={area}>{area}</li>
-            ))}
-          </ul>
-          <ul className="list-disc space-y-2 pl-5 text-base leading-7">
-            {areas.slice(7).map((area) => (
-              <li key={area}>{area}</li>
-            ))}
-          </ul>
-        </div>
+        <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {areas.map((area) => (
+            <li
+              key={area}
+              className="rounded-lg border-l-4 border-[#FFAB0B] bg-white/10 px-4 py-3 text-base leading-6 transition duration-200 hover:translate-x-1 hover:bg-white/20"
+            >
+              {area}
+            </li>
+          ))}
+        </ul>
       </section>
 
       <section
@@ -334,22 +476,7 @@ export default function Home() {
 
         <div className="relative z-[1] w-full">
           <Titulo>Tipos de Violência</Titulo>
-
-          <div className="grid grid-cols-2 gap-x-3 gap-y-6 sm:grid-cols-3 md:grid-cols-5 md:gap-x-4 md:gap-y-8">
-            {violencias.map((item) => (
-              <details key={item.titulo} className="group relative min-w-0">
-                <summary className="flex min-h-[52px] cursor-pointer list-none items-center justify-center rounded-xl bg-[#FFAB0B] px-2 py-2 text-center text-sm font-semibold leading-5 text-white transition-colors hover:bg-[#F59E0B] [&::-webkit-details-marker]:hidden">
-                  {item.titulo}
-                </summary>
-
-                <div className="absolute left-0 top-full z-50 mt-2 w-56 max-w-[85vw] rounded-xl border border-gray-200 bg-white p-3 shadow-lg">
-                  <p className="text-sm leading-6 text-gray-700">
-                    {item.descricao}
-                  </p>
-                </div>
-              </details>
-            ))}
-          </div>
+          <TiposDeViolencia />
         </div>
       </section>
 
