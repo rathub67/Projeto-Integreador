@@ -2,9 +2,34 @@ import { useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 
 import { api } from "../api";
-import fundo from "../assets/tipos.png";
 import escritorio from "../assets/escritorio1 1.png";
 import hero from "../assets/b4b7a069-6e24-47de-8b82-08aea7fa4b60.png";
+
+/*
+  Onda em SVG. A parte de cima é transparente, então o elemento que
+  envolve a onda precisa ter a cor da seção de cima (ver <Home />).
+  A prop "color" é a cor da seção de baixo.
+*/
+function Wave({ color = "#F1E6F7" }) {
+  return (
+    <svg
+      viewBox="0 0 1440 120"
+      preserveAspectRatio="none"
+      className="block h-20 w-full"
+      aria-hidden="true"
+    >
+      <path
+        d="M0,50 C200,10 420,20 640,55 C900,100 1150,90 1440,40 L1440,120 L0,120 Z"
+        fill={color}
+        opacity="0.45"
+      />
+      <path
+        d="M0,70 C240,115 480,15 720,55 C960,95 1200,25 1440,65 L1440,120 L0,120 Z"
+        fill={color}
+      />
+    </svg>
+  );
+}
 
 const areas = [
   "Constitucional",
@@ -77,7 +102,7 @@ const violencias = [
 ];
 
 const seta =
-  "flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-full border border-[#d9a63e] bg-white text-[#360e53] transition hover:border-[#FF7043] hover:bg-[#FF7043] hover:text-white disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#360e53]";
+  "flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-full border border-[#B98AD6] bg-white text-[#360e53] transition hover:border-[#FF7043] hover:bg-[#FF7043] hover:text-white disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#360e53]";
 
 /* Animações da home. Ficam desligadas para quem usa "reduzir movimento". */
 const estilos = `
@@ -106,7 +131,7 @@ function Titulo({ children, escuro = false }) {
     <div className="mb-6 flex gap-2">
       <span
         className={`w-1 shrink-0 rounded-full ${
-          escuro ? "bg-[#FFAB0B]" : "bg-[#FF7043]"
+          escuro ? "bg-[#E9D5F5]" : "bg-[#FF7043]"
         }`}
       />
       <h2
@@ -122,7 +147,7 @@ function Titulo({ children, escuro = false }) {
 
 function Hero() {
   return (
-    <div className="relative flex min-h-[559px] items-end overflow-hidden bg-[#ffefa7]">
+    <div className="relative flex min-h-[559px] items-end overflow-hidden bg-[#8048A9]">
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: `url(${hero})` }}
@@ -164,11 +189,11 @@ function FaixaEmergencia() {
   return (
     <div className="bg-[#360E53] px-6 py-3 text-center text-sm text-white md:px-10">
       Em risco agora? Ligue{" "}
-      <a href="tel:190" className="font-bold text-[#FFAB0B] hover:underline">
+      <a href="tel:190" className="font-bold text-[#E9D5F5] hover:underline">
         190
       </a>{" "}
       (Polícia Militar) ou{" "}
-      <a href="tel:180" className="font-bold text-[#FFAB0B] hover:underline">
+      <a href="tel:180" className="font-bold text-[#E9D5F5] hover:underline">
         180
       </a>{" "}
       (Central de Atendimento à Mulher).
@@ -200,7 +225,7 @@ function TiposDeViolencia() {
               className={`flex min-h-[56px] cursor-pointer items-center justify-center rounded-xl px-2 py-2 text-center text-sm font-semibold leading-5 transition duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#360e53] ${
                 ativo
                   ? "-translate-y-0.5 bg-[#360E53] text-white shadow-lg"
-                  : "bg-[#FFAB0B] text-white hover:-translate-y-0.5 hover:bg-[#F59E0B] hover:shadow-md"
+                  : "bg-[#7B3FA0] text-white hover:-translate-y-0.5 hover:bg-[#5E2C7E] hover:shadow-md"
               }`}
             >
               {item.titulo}
@@ -228,7 +253,7 @@ function TiposDeViolencia() {
                 ×
               </button>
             </div>
-            <p className="mt-2 max-w-3xl text-base leading-7 text-gray-700">
+            <p className="mt-2 text-base leading-7 text-gray-700">
               {atual.descricao}
             </p>
             <NavLink
@@ -306,7 +331,7 @@ function Noticias() {
         {[0, 1, 2].map((i) => (
           <div
             key={i}
-            className="h-36 flex-1 animate-pulse rounded-xl bg-[#FFAB0B]/40"
+            className="h-36 flex-1 animate-pulse rounded-xl bg-[#7B3FA0]/30"
           />
         ))}
       </div>
@@ -323,7 +348,7 @@ function Noticias() {
 
   if (news.length === 0) {
     return (
-      <div className="rounded-xl border border-dashed border-[#e7d7ee] px-5 py-10 text-center text-[#6f5a7c]">
+      <div className="rounded-xl border border-dashed border-[#c9a7dd] px-5 py-10 text-center text-[#6f5a7c]">
         <h3 className="mb-1.5 text-lg font-bold text-[#241130]">
           Nenhuma notícia publicada
         </h3>
@@ -348,14 +373,27 @@ function Noticias() {
             href={item.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex min-h-[9rem] shrink-0 basis-[88%] snap-start flex-col gap-2 rounded-xl bg-[#FFAB0B] p-4 text-white no-underline shadow-sm transition duration-200 hover:-translate-y-1 hover:bg-[#F59E0B] hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#360e53] sm:basis-[calc((100%-1rem)/2)] md:basis-[calc((100%-2rem)/3)] lg:basis-[calc((100%-3rem)/4)] xl:basis-[calc((100%-4rem)/5)]"
+            className="group flex min-h-[9rem] shrink-0 basis-[88%] snap-start flex-col overflow-hidden rounded-xl bg-[#7B3FA0] text-white no-underline shadow-sm transition duration-200 hover:-translate-y-1 hover:bg-[#5E2C7E] hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#360e53] sm:basis-[calc((100%-1rem)/2)] md:basis-[calc((100%-2rem)/3)] lg:basis-[calc((100%-3rem)/4)] xl:basis-[calc((100%-4rem)/5)]"
           >
-            <h3 className="m-0 break-words text-base font-bold leading-6 text-white">
-              {item.title}
-            </h3>
-            <span className="mt-auto text-sm font-semibold text-white/90 transition group-hover:translate-x-1 group-hover:text-white">
-              Ler notícia ↗
-            </span>
+            {item.image && (
+              <img
+                src={item.image}
+                alt=""
+                loading="lazy"
+                onError={(e) => {
+                  e.currentTarget.style.display = "none";
+                }}
+                className="h-36 w-full object-cover"
+              />
+            )}
+            <div className="flex flex-1 flex-col gap-2 p-4">
+              <h3 className="m-0 break-words text-base font-bold leading-6 text-white">
+                {item.title}
+              </h3>
+              <span className="mt-auto text-sm font-semibold text-white/90 transition group-hover:translate-x-1 group-hover:text-white">
+                Ler notícia ↗
+              </span>
+            </div>
           </a>
         ))}
       </div>
@@ -372,7 +410,7 @@ function Noticias() {
                 className={`h-2 cursor-pointer rounded-full border-0 transition-all ${
                   index === activeIndex
                     ? "w-6 bg-[#FF7043]"
-                    : "w-2 bg-[#d9a63e] hover:bg-[#FFAB0B]"
+                    : "w-2 bg-[#C9A7DD] hover:bg-[#7B3FA0]"
                 }`}
               />
             ))}
@@ -406,7 +444,7 @@ function Noticias() {
 
 export default function Home() {
   return (
-    <div className="h-auto bg-[#F4E7F6]">
+    <div className="h-auto bg-[#F1E6F7]">
       <style>{estilos}</style>
 
       <section>
@@ -456,7 +494,7 @@ export default function Home() {
           {areas.map((area) => (
             <li
               key={area}
-              className="rounded-lg border-l-4 border-[#FFAB0B] bg-white/10 px-4 py-3 text-base leading-6 transition duration-200 hover:translate-x-1 hover:bg-white/20"
+              className="rounded-lg border-l-4 border-[#E9D5F5] bg-white/10 px-4 py-3 text-base leading-6 transition duration-200 hover:translate-x-1 hover:bg-white/20"
             >
               {area}
             </li>
@@ -464,25 +502,19 @@ export default function Home() {
         </ul>
       </section>
 
-      <section
-        id="violencia"
-        className="relative flex min-h-[283px] items-center bg-[#ffefa7] px-6 py-12 md:px-10"
-      >
-        <div
-          className="absolute inset-0 hidden bg-cover bg-center min-[767px]:block"
-          style={{ backgroundImage: `url(${fundo})` }}
-          aria-hidden="true"
-        />
+      {/* Onda: o fundo é a cor da seção de cima, a onda é a cor da de baixo */}
+      <div className="bg-[#A67AC7]">
+        <Wave color="#F1E6F7" />
+      </div>
 
-        <div className="relative z-[1] w-full">
-          <Titulo>Tipos de Violência</Titulo>
-          <TiposDeViolencia />
-        </div>
+      <section id="violencia" className="bg-[#F1E6F7] px-6 pb-12 pt-2 md:px-10">
+        <Titulo>Tipos de Violência</Titulo>
+        <TiposDeViolencia />
       </section>
 
       <section
         id="noticias"
-        className="scroll-mt-24 bg-[#ffefa7] px-6 py-12 md:px-10"
+        className="scroll-mt-24 bg-[#F1E6F7] px-6 py-12 md:px-10"
       >
         <div className="mx-auto max-w-6xl">
           <Titulo>Notícias</Titulo>
