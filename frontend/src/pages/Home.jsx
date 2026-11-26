@@ -5,11 +5,6 @@ import { api } from "../api";
 import escritorio from "../assets/escritorio1 1.png";
 import hero from "../assets/b4b7a069-6e24-47de-8b82-08aea7fa4b60.png";
 
-/*
-  Onda em SVG. A parte de cima é transparente, então o elemento que
-  envolve a onda precisa ter a cor da seção de cima (ver <Home />).
-  A prop "color" é a cor da seção de baixo.
-*/
 function Wave({ color = "#F1E6F7" }) {
   return (
     <svg
@@ -104,7 +99,6 @@ const violencias = [
 const seta =
   "flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-full border border-[#B98AD6] bg-white text-[#360e53] transition hover:border-[#FF7043] hover:bg-[#FF7043] hover:text-white disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#360e53]";
 
-/* Animações da home. Ficam desligadas para quem usa "reduzir movimento". */
 const estilos = `
 @keyframes rm-subir {
   from { opacity: 0; transform: translateY(18px); }
@@ -153,7 +147,6 @@ function Hero() {
         style={{ backgroundImage: `url(${hero})` }}
         aria-hidden="true"
       />
-      {/* Degradê só na base, para o texto ler bem sem esconder a imagem */}
       <div
         className="absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-t from-[#360E53]/85 via-[#360E53]/40 to-transparent"
         aria-hidden="true"
@@ -172,13 +165,6 @@ function Hero() {
           >
             Denuncie
           </NavLink>
-
-          <a
-            href="tel:180"
-            className="inline-block rounded-[5rem] border border-white/70 bg-white/10 px-[1.6em] py-[0.9em] text-base font-semibold text-white no-underline backdrop-blur-sm transition hover:bg-white hover:text-[#360E53] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-          >
-            Ligue 180
-          </a>
         </div>
       </div>
     </div>
@@ -188,11 +174,7 @@ function Hero() {
 function FaixaEmergencia() {
   return (
     <div className="bg-[#360E53] px-6 py-3 text-center text-sm text-white md:px-10">
-      Em risco agora? Ligue{" "}
-      <a href="tel:190" className="font-bold text-[#E9D5F5] hover:underline">
-        190
-      </a>{" "}
-      (Polícia Militar) ou{" "}
+      Precisa de ajuda agora? Ligue{" "}
       <a href="tel:180" className="font-bold text-[#E9D5F5] hover:underline">
         180
       </a>{" "}
@@ -502,7 +484,6 @@ export default function Home() {
         </ul>
       </section>
 
-      {/* Onda: o fundo é a cor da seção de cima, a onda é a cor da de baixo */}
       <div className="bg-[#A67AC7]">
         <Wave color="#F1E6F7" />
       </div>
